@@ -47,6 +47,7 @@ function toShowBootedDevices(device) {
 }
 
 function attemptToRecover(err) {
+  console.log("attemptToRecover", err);
   return async.task(function * () {
     log.warn(`Problem starting simulator. Attempting to recover. Please wait ~30sec!`);
     // Let's try to kill booted custom instances
@@ -54,7 +55,7 @@ function attemptToRecover(err) {
       const data = yield toExecPromise("xcrun simctl list");
       yield processData.bind(this)(data);
     } catch (err) {
-      console.log("attemptToRecover", err);
+      console.log("attemptToRecover: could not kill simulators", err);
     }
     this._process.kill();
   }, this);
